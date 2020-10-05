@@ -6,46 +6,20 @@ import PokemonGamesSection from "../../components/PokemonGamesSection";
 import Column from "../../components/Column";
 import { fetchPokemonGames, fetchPokemonByName } from "../../api/pokeapi";
 
-class PokemonGames extends React.Component {
-  state = {
-    games: null
-  };
+function PokemonGames(props) {
+  const [games, setGames] = useState(null);
 
-  componentDidMount() {
-    this.fetchGames();
-  }
+  useEffect(() => {
+    setGames(null);
 
-  componentDidUpdate(prevProps) {
-    if (
-      (!prevProps.pokemon && this.props.pokemon) ||
-      prevProps.pokemon.name !== this.props.pokemon.name
-    ) {
-      this.fetchGames();
-    }
-  }
-
-  fetchGames() {
-    this.setState({
-      games: null
-    });
-
-    if (!this.props.pokemon) return;
     fetchPokemonGames(
-      this.props.pokemon.game_indices.map(game => game.version.name)
+      props.pokemon.game_indices.map(game => game.version.name)
     ).then(games => {
-      this.setState({
-        games
-      });
+      setGames(games);
     });
-  }
+  }, [props.pokemon.game_indices, props.pokemon.name]);
 
-  render() {
-    return !this.state.games ? (
-      <Spinner />
-    ) : (
-      <PokemonGamesSection games={this.state.games} />
-    );
-  }
+  return !games ? <Spinner /> : <PokemonGamesSection games={games} />;
 }
 
 export default function Pokemon(props) {
