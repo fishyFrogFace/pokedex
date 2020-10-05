@@ -7,12 +7,18 @@ import SidebarItem from "../../components/SidebarItem";
 import SidebarTitle from "../../components/SidebarTitle";
 import { fetchPokemons } from "../../api/pokeapi";
 
-export default function PokemonList(props) {
+const usePokemons = () => {
   const [pokemons, setPokemons] = useState(null);
 
   useEffect(() => {
     fetchPokemons().then(pokemons => setPokemons(pokemons));
   }, []); //dependency array causes the effect to only run once
+
+  return pokemons;
+};
+
+export default function PokemonList(props) {
+  const pokemons = usePokemons();
 
   return (
     <Sidebar>
