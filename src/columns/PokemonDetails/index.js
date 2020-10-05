@@ -1,5 +1,5 @@
 // Renders the profile and games of a single pokemon
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Spinner } from "@nice-boys/components";
 import PokemonProfile from "../../components/PokemonProfile";
 import PokemonGamesSection from "../../components/PokemonGamesSection";
@@ -48,48 +48,25 @@ class PokemonGames extends React.Component {
   }
 }
 
-class Pokemon extends React.Component {
-  state = {
-    pokemon: null
-  };
+export default function Pokemon(props) {
+  const [pokemon, setPokemon] = useState(null);
 
-  componentDidMount() {
-    this.fetchPokemon();
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.name !== this.props.name) {
-      this.fetchPokemon();
-    }
-  }
-
-  fetchPokemon() {
-    this.setState({
-      pokemon: null
+  useEffect(() => {
+    fetchPokemonByName(props.name).then(pokemon => {
+      setPokemon(pokemon);
     });
+  }, [props.name]);
 
-    if (!this.props.name) return;
-    fetchPokemonByName(this.props.name).then(pokemon => {
-      this.setState({
-        pokemon
-      });
-    });
-  }
-
-  render() {
-    return (
-      <Column width={1} p={4}>
-        {!this.props.name ? null : !this.state.pokemon ? (
-          <Spinner />
-        ) : (
-          <>
-            <PokemonProfile pokemon={this.state.pokemon} />
-            <PokemonGames pokemon={this.state.pokemon} />
-          </>
-        )}
-      </Column>
-    );
-  }
+  return (
+    <Column width={1} p={4}>
+      {!props.name ? null : !pokemon ? (
+        <Spinner />
+      ) : (
+        <>
+          <PokemonProfile pokemon={pokemon} />
+          <PokemonGames pokemon={pokemon} />
+        </>
+      )}
+    </Column>
+  );
 }
-
-export default Pokemon;
