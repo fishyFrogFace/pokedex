@@ -26,10 +26,13 @@ export default function Pokemon(props) {
   const [pokemon, setPokemon] = useState(null);
 
   useEffect(() => {
+    setPokemon(null);
+
+    if (!pokemon.name) return;
     fetchPokemonByName(props.name).then(pokemon => {
       setPokemon(pokemon);
     });
-  }, [props.name]);
+  }, [pokemon.name, props.name]);
 
   return (
     <Column width={1} p={4}>
