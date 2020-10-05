@@ -22,17 +22,23 @@ function PokemonGames(props) {
   return !games ? <Spinner /> : <PokemonGamesSection games={games} />;
 }
 
-export default function Pokemon(props) {
+const usePokemon = name => {
   const [pokemon, setPokemon] = useState(null);
 
   useEffect(() => {
     setPokemon(null);
 
-    if (!pokemon.name) return;
-    fetchPokemonByName(props.name).then(pokemon => {
+    if (!name) return;
+    fetchPokemonByName(name).then(pokemon => {
       setPokemon(pokemon);
     });
-  }, [pokemon.name, props.name]);
+  }, [name]);
+
+  return pokemon;
+};
+
+export default function Pokemon(props) {
+  const pokemon = usePokemon(props.name);
 
   return (
     <Column width={1} p={4}>
