@@ -10,7 +10,7 @@ export default function App() {
 
   useEffect(() => {
     document.title = `${selectedPokemon ? `${selectedPokemon} | ` : ""}Pokedex`;
-  });
+  }, [selectedPokemon]);
 
   return (
     <BaseStyles>
