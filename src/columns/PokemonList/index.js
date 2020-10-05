@@ -12,7 +12,7 @@ export default function PokemonList(props) {
 
   useEffect(() => {
     fetchPokemons().then(pokemons => setPokemons(pokemons));
-  }, []);
+  }, []); //dependency array causes the effect to only run once
 
   return (
     <Sidebar>
